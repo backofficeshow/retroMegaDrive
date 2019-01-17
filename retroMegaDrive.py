@@ -17,6 +17,7 @@ title = ""
 stopping = 0
 oldswi = 99
 power = 0
+splash = 0
 
 def read_from_card():
 	global ready
@@ -24,33 +25,42 @@ def read_from_card():
 	ready = 0
 	while stopping == 0:
 		print("Waiting for card")
-		id, title = reader.read()
+		id, title = reader.read_no_block()
+		while not id:
+	     		id, title = reader.read_no_block()
+			time.sleep(0.1)
 		print("Card " + title + " found")
 		ready = 1
 		while ready == 1:
 			time.sleep(0.1)
 	print("Card Process DONE")
 
+def logo(state):
+	try:
+		os.killpg(os.getpgid(splash.pid), signal.SIGTERM)
+	except NameError:
+		print("No splash")
+
+	if state == 1:
+		splash=subprocess.Popen('fbi /home/pi/logoON.jpg -noverbose -a', shell=True)
+	else:
+		splash=subprocess.Popen('fbi /home/pi/logoOFF.jpg -noverbose -a', shell=True)
 
 try:
 	GPIO.setup(24,GPIO.OUT)
 	GPIO.setup(23,GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-	j=subprocess.Popen('fbi /home/pi/logo.jpg -noverbose -a', shell=True)
-
+	
 	thread = threading.Thread(target=read_from_card)
 	
 	print("We Begin")
 	thread.start()
 	while True:
-		print(ready)
 		inputswi = GPIO.input(23)
 		if ready == 1:
 			if power == 1:
 				print('Loading emulator')
 				os.system('killall retroarch -q')
 				p=subprocess.Popen('nohup /home/pi/romLoader.sh ' + title, shell=True)
-				time.sleep(3)
 			ready = 0
 
 		if inputswi != oldswi:
@@ -59,10 +69,12 @@ try:
 				print("Poweroff")
 				GPIO.output(24, GPIO.LOW)
 				os.system('killall retroarch -q')
+				logo(0)
 				power = 0
 			else:
 				print("Poweron")
 				GPIO.output(24, GPIO.HIGH)
+				logo(1)
 				power = 1
 			oldswi = inputswi
 		time.sleep(0.1)
