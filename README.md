@@ -14,5 +14,24 @@ Youtube Video on the Hardware: https://youtu.be/cAqT-5XCoWA
 
 Youtube Video on the Software: https://youtu.be/5KTQK2agE38
 
+Keyboard Joypad:
+UK: https://amzn.to/2UhYxpo
+USA: https://amzn.to/2B9Y1T5
+
+RFID Reader:
+UK: https://amzn.to/2UrYKXf
+USA: https://amzn.to/2MB9504
+
+RFID Tags:
+UK: https://amzn.to/2B895jD
+USA: https://amzn.to/2TiLCDD
+
+Raspberry Pi A+:
+UK: https://amzn.to/2Uu5EeD
+USA: https://amzn.to/2FUqwZ5
+
+HDMI Lead:
+UK: https://amzn.to/2B8epU2
+USA: https://amzn.to/2MHafHC
 
 @backofficeshow
